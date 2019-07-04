@@ -44,7 +44,7 @@ class UpdateChecker:
 		__local_version = __local_json["current_version"]
 
 		#Check if the local version and the github version are not the same
-		if(__local_version is not __update_version):
+		if(__local_version != __update_version):
 			#Notify that an update is available
 			self.__status_bar.set_text("Update available!")
 		else:
