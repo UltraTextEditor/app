@@ -1,7 +1,6 @@
 from application.application import Application
+import application.utils.updatechecker as upd
 import sys, os
 
-app = Application("Slime", show_tabs=False)
-app.get_entry()["borderwidth"] = 0
-app.get_entry()["highlightthickness"] = 0
+app = Application("Ultra", show_tabs=False)
 app.run()
