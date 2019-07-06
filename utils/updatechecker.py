@@ -1,8 +1,10 @@
 import json
-import urllib
+import urllib.request
 
 class UpdateChecker:
-	def __init__(self, status_bar, url="info/info.json"):
+	def __init__(self, status_bar, url="https://raw.github.com/UltraTextEditor/app/master/info/info.json"):
+		if(url is "info/info.json"):
+			url = "https://raw.github.com/UltraTextEditor/app/master/info/info.json"
 		#Set the status bar
 		self.__status_bar = status_bar
 		#Set the url
@@ -12,7 +14,7 @@ class UpdateChecker:
 		#Notify that we are checking for updates
 		self.__status_bar.set_text("Checking for updates")
 		#Get the response from the github page
-		response = urllib.urlopen(self.__url)
+		response = urllib.request.urlopen(self.__url)
 		#Update the status of our update checking
 		self.__status_bar.set_text("Checking for updates.", time_slept_before_change=0.5)
 		#Set json to the string grabbed from the github page

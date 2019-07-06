@@ -1,3 +1,4 @@
+from functools import partial
 #Import time for sleeping during text change
 import time
 #Import tkinter for ui
@@ -47,7 +48,7 @@ class Application:
 
 	def __check_for_updates(self):
 		#Instantiate the update checker
-		updater = update.UpdateChecker(self.__status_bar,url="info/info.json")
+		updater = update.UpdateChecker(self.__status_bar)
 		#Check for updates
 		updater.check_for_updates()
 	def on_key_down(self, key):
@@ -137,6 +138,7 @@ class Application:
 		self.__file_menu = Menu(self.__toolbar)
 		#self.__list_files(os.path.expanduser("~") + "/TempDir", self.__file_menu)
 		#Add the save command
+		self.__file_menu.add_command(label="Open", command=partial(self.open_file, None))
 		self.__file_menu.add_command(label="Save", command=self.save)
 		#Set the background to white
 		self.__file_menu.config(bg='#FFFFFF')
@@ -205,18 +207,20 @@ class Application:
 			__file.close()
 
 	def set_text(self, text):
-		self.__file_content = ""
+		__file_content = ""
 		#Update the file content text
-		self.__file_content = text
+		__file_content = text
 		#Update the entry
-		self.__update_entry(text)
+		self.__entry_box.delete("1.0", END)
+		self.__entry_box.insert("1.0", __file_content)
+
 
 	def __update_entry(self, text):
 		try:
-			self.__entry_box.delete("0.0", END)
+			self.__entry_box.delete("1.0", END)
 			self.__entry_box.update()
 			time.sleep(0.5)
-			self.__entry_box.insert("0.0", text)
+			self.__entry_box.insert(END, text)
 		except AttributeError as error:
 			pass
 	def run(self):
@@ -249,9 +253,12 @@ class Application:
 		print("Saved file")
 
 	def open_file(self, path):
+		if(path is None):
+			path = askopenfilename()
 		#Set the file to the given path
 		__file = open(path, "r")
 		#Loop through the lines and get the file content
+		self.__file_content = ""
 		for line in __file.readlines():
 			#Append file content variable to line variable
 			self.__file_content += line
